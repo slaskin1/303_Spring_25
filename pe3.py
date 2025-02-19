@@ -15,7 +15,7 @@ def encode(input_text: str, shift: int):
             new_char = alphabet_upper[(alphabet_upper.index(char) + shift) % 26]
             encoded_text += new_char
         else:
-            encoded_text += char  # Preserve punctuation, spaces, and numbers
+            encoded_text += char
 
     return (list(alphabet_lower), encoded_text)
 
@@ -58,11 +58,11 @@ class SavingsAccount(BankAccount):
         super().__init__(name, ID, creation_date, balance)
 
     def withdraw(self, amount):
-        days_active = (datetime.date.today() - self.creation_date).days
-        if days_active < 180:
-            raise Exception("Withdrawals are only permitted after 180 days.")
         if amount > self.balance:
             raise Exception("Overdrafts are not permitted.")
+        days_active = (datetime.date.today() - self.creation_date).days
+        if days_active < 180:
+            raise Exception("Withdrawals are only permitted after 180 days.")  
         super().withdraw(amount)
 
 # CheckingAccount class
@@ -74,8 +74,7 @@ class CheckingAccount(BankAccount):
         if amount <= 0:
             raise ValueError("Withdrawal amount must be positive.")
         if amount > self.balance:
-            self.balance -= (amount + 30)  # Apply overdraft fee
+            self.balance -= (amount + 30)
             print(f"Overdraft! Withdrawn ${amount}. Fee applied. New balance: ${self.balance}")
         else:
             super().withdraw(amount)
-
